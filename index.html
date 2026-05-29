@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Treemap</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+<div id="bar">
+	<h1>GitHub Treemap</h1>
+	<input id="repo-input" type="text" placeholder="owner/repo or GitHub URL" spellcheck="false" autocomplete="off">
+	<input id="token-input" type="password" placeholder="GitHub token (optional)" spellcheck="false">
+	<button id="visualize-btn">Visualize</button>
+	<button id="reset-btn">Reset View</button>
+</div>
+
+<div id="toast"></div>
+
+<div id="treemap-container">
+	<div id="treemap-renderer"></div>
+	<div id="loading">
+		<div class="spinner"></div>
+		<p id="loading-text">Fetching repository…</p>
+	</div>
+</div>
+
+<div id="tooltip">
+	<div class="path"></div>
+	<div class="size"></div>
+</div>
+
+<script src="./app.js"></script>
+</body>
+
+</html>
