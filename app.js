@@ -62,8 +62,31 @@
 	// API Layer
 	//
 
+	async function fetchDefaultBranch(owner, repo, token) {
+		const headers = { 'Accept': 'application/vnd.github.v3+json' }
+		if (token) headers['Authorization'] = `Bearer ${token}`
+
+		const resp = await fetch(`https://api.github.com/repos/${owner}/${repo}`, { headers })
+
+		if (!resp.ok) {
+			const status = resp.status
+			if (status === 403) throw { code: 'RATE_LIMIT', status, message: 'Rate limited' }
+			if (status === 404) throw { code: 'NOT_FOUND', status, message: `Repository ${owner}/${repo} not found` }
+			const body = await resp.json().catch(() => ({}))
+			throw { code: 'HTTP_ERROR', status, message: body.message || `HTTP ${status}` }
+		}
+
+		const data = await resp.json()
+		return data.default_branch
+	}
+
 	async function fetchRepoTree(owner, repo, branch, token, onProgress) {
-		const ref = branch || 'main'
+		let ref = branch
+		if (!ref) {
+			onProgress('Detecting default branch…')
+			ref = await fetchDefaultBranch(owner, repo, token)
+		}
+
 		const headers = { 'Accept': 'application/vnd.github.v3+json' }
 		if (token) headers['Authorization'] = `Bearer ${token}`
 
@@ -246,6 +269,7 @@
 	async function visualize() {
 		const input = $('repo-input').value
 		const token = $('token-input').value.trim()
+		const branchInput = $('branch-input').value.trim() || null
 		const parsed = parseRepoInput(input)
 
 		if (!parsed) {
@@ -253,7 +277,8 @@
 			return
 		}
 
-		const { owner, repo, branch } = parsed
+		const { owner, repo, branch: parsedBranch } = parsed
+		const branch = parsedBranch || branchInput
 		const btn = $('visualize-btn')
 		btn.disabled = true
 		$('toast').style.display = 'none'

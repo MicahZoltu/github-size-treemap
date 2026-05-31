@@ -50,7 +50,7 @@ html, body {
 	flex-shrink: 0;
 }
 
-#repo-input, #token-input {
+#repo-input, #token-input, #branch-input {
 	height: 32px;
 	padding: 0 10px;
 	background: var(--bg);
@@ -60,8 +60,8 @@ html, body {
 	outline: none;
 	transition: border-color 0.15s;
 }
-#repo-input:focus, #token-input:focus { border-color: var(--accent); }
-#repo-input::placeholder, #token-input::placeholder { color: var(--text-muted); }
+#repo-input:focus, #token-input:focus, #branch-input:focus { border-color: var(--accent); }
+#repo-input::placeholder, #token-input::placeholder, #branch-input::placeholder { color: var(--text-muted); }
 
 #repo-input {
 	flex: 1;
@@ -103,6 +103,12 @@ html, body {
 
 #token-input {
 	width: 180px;
+	flex-shrink: 0;
+	font-size: 12px;
+}
+
+#branch-input {
+	width: 140px;
 	flex-shrink: 0;
 	font-size: 12px;
 }
@@ -204,6 +210,7 @@ html, body {
 	#bar { gap: 6px; padding: 0 8px; }
 	#bar h1 { display: none; }
 	#token-input { width: 120px; }
+	#branch-input { width: 90px; }
 	#visualize-btn { padding: 0 10px; font-size: 12px; }
 	#reset-btn { padding: 0 10px; font-size: 12px; }
 }
